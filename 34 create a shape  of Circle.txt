@@ -1,0 +1,35 @@
+import cv2
+import numpy as np
+
+def create_white_image_with_circle():
+    # 1. Get user input for dimensions
+    width = int(input("Enter image width: "))
+    height = int(input("Enter image height: "))
+
+    # 2. Create a white image
+    # (height, width, 3 channels for BGR)
+    img = np.ones((height, width, 3), dtype=np.uint8) * 255
+
+    # 3. Define circle parameters
+    # Center of the image
+    center = (width // 2, height // 2)
+    
+    # Radius (1/4 of the smaller dimension to ensure it fits)
+    radius = min(width, height) // 4
+    
+    # Color (BGR: Blue, Green, Red) - Red circle
+    color = (0, 0, 255)
+    
+    # Thickness in pixels (use -1 for a filled circle)
+    thickness = 3
+
+    # 4. Draw the circle
+    cv2.circle(img, center, radius, color, thickness)
+
+    # 5. Display the result
+    cv2.imshow("White Image with Circle", img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+# Run the function
+create_white_image_with_circle()

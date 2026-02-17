@@ -1,0 +1,23 @@
+import cv2
+import numpy as np
+
+# 1. Load the image in grayscale
+img = cv2.imread(r'C:\Users\HP\Documents\openCV\sample.jpg', cv2.IMREAD_GRAYSCALE)
+
+if img is None:
+    print("Error: Could not load image.")
+else:
+    # 2. Define a large kernel
+    # Top Hat is often used to extract small bright features from a dark background
+    kernel = np.ones((15, 15), np.uint8)
+
+    # 3. Perform Top Hat transformation
+    # Logic: Original Image - Opening of the Image
+    tophat = cv2.morphologyEx(img, cv2.MORPH_TOPHAT, kernel)
+
+    # 4. Display results
+    cv2.imshow('Original Grayscale', img)
+    cv2.imshow('Top Hat (Bright features)', tophat)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()

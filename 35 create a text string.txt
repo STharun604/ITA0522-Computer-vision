@@ -1,0 +1,32 @@
+import cv2
+
+def add_text_to_image():
+    # 1. Load the image
+    img = cv2.imread(r'C:\Users\HP\Documents\openCV\sample.jpg')
+
+    if img is None:
+        print("Error: Could not load image.")
+        return
+
+    # 2. Get the text string from the user
+    user_text = input("Enter the text you want to display: ")
+
+    # 3. Define text properties
+    # Position: (x, y) coordinates for the bottom-left corner of the text
+    position = (50, 100)
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    font_scale = 1
+    color = (255, 0, 0) # Blue in BGR
+    thickness = 2
+    line_type = cv2.LINE_AA
+
+    # 4. Put the text on the image
+    cv2.putText(img, user_text, position, font, font_scale, color, thickness, line_type)
+
+    # 5. Display the result
+    cv2.imshow("Image with User Text", img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+# Run the function
+add_text_to_image()

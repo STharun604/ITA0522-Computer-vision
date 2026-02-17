@@ -1,0 +1,44 @@
+import cv2
+import os
+
+def count_faces(image_path):
+    # 1. Check if the image file actually exists
+    if not os.path.exists(image_path):
+        print(f"Error: The file at {image_path} does not exist.")
+        return
+
+    # 2. Load the classifier
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+    
+    if face_cascade.empty():
+        print("Error: Could not load Haar Cascade XML file.")
+        return
+
+    # 3. Read the image
+    img = cv2.imread(image_path)
+    if img is None:
+        print("Error: OpenCV could not read the image. It might be corrupted.")
+        return
+
+    # 4. Process Detection
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray, 1.1, 5, minSize=(30, 30))
+
+    # 5. Draw and Display
+    for (x, y, w, h) in faces:
+        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+    cv2.putText(img, f"Count: {len(faces)}", (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
+    print(f"Success! Detected {len(faces)} faces.")
+    
+    # 6. Force window to stay open
+    cv2.imshow('Face Counter', img)
+    
+    # Wait for any key press. If you pass a number (like 1), it closes in 1ms. 
+    # 0 stays open forever until you press a key.
+    cv2.waitKey(0) 
+    cv2.destroyAllWindows()
+
+# RUN THE FUNCTION
+count_faces(r'C:\Users\HP\Documents\openCV\face.jpeg')

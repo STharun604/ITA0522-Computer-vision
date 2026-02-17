@@ -1,0 +1,22 @@
+import cv2
+import numpy as np
+
+# 1. Load the image
+img = cv2.imread(r'C:\Users\HP\Documents\openCV\sample.jpg', cv2.IMREAD_GRAYSCALE)
+
+if img is None:
+    print("Error: Could not load image.")
+else:
+    # 2. Define the kernel (Structural Element)
+    kernel = np.ones((5, 5), np.uint8)
+
+    # 3. Perform Closing (Dilation followed by Erosion)
+    # Useful for filling small holes inside foreground objects
+    closing = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
+
+    # 4. Show results
+    cv2.imshow('Original', img)
+    cv2.imshow('Closing Result', closing)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()

@@ -1,0 +1,42 @@
+import cv2
+import numpy as np
+
+def create_corner_box_image():
+    # 1. Get user input for dimensions
+    width = int(input("Enter image width: "))
+    height = int(input("Enter image height: "))
+
+    # 2. Create a white image (all pixels 255)
+    # Dimensions are (Height, Width, 3 channels for BGR)
+    img = np.ones((height, width, 3), dtype=np.uint8) * 255
+
+    # 3. Calculate box size (1/10th of image dimensions)
+    bh = height // 10
+    bw = width // 10
+
+    # 4. Define colors in BGR format
+    black = [0, 0, 0]
+    blue  = [255, 0, 0]
+    green = [0, 255, 0]
+    red   = [0, 0, 255]
+
+    # 5. Place boxes in corners using array slicing
+    # Top-Left: Black
+    img[0:bh, 0:bw] = black
+    
+    # Top-Right: Blue
+    img[0:bh, width-bw:width] = blue
+    
+    # Bottom-Left: Green
+    img[height-bh:height, 0:bw] = green
+    
+    # Bottom-Right: Red
+    img[height-bh:height, width-bw:width] = red
+
+    # 6. Display the result
+    cv2.imshow("Corner Boxes", img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+# Run the function
+create_corner_box_image()

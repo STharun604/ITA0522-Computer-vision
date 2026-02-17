@@ -1,0 +1,37 @@
+import cv2
+
+def reverse_video_live(input_path, output_path):
+    cap = cv2.VideoCapture(input_path)
+    
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    
+    frames = []
+    print(f"Reading {total_frames} frames... Please wait.")
+    
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        frames.append(frame)
+    
+    cap.release()
+    frames.reverse()
+    
+    out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
+    
+    print("Writing and Displaying reversed video...")
+    for frame in frames:
+        out.write(frame)
+        cv2.imshow('Reversing Process', frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+            
+    out.release()
+    cv2.destroyAllWindows()
+    print("Done!")
+
+reverse_video_live(r'C:\Users\HP\Documents\openCV\vedio.mp4', r'C:\Users\HP\Documents\openCV\reversed_video.mp4')

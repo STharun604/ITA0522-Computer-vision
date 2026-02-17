@@ -1,0 +1,27 @@
+import cv2
+import numpy as np
+
+# 1. Load the image
+path = r'C:\Users\HP\Documents\openCV\sample.jpg'
+img = cv2.imread(path)
+
+if img is None:
+    print("Error: Image not found.")
+else:
+    # 2. Convert to Grayscale
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # 3. Create a Kernel (Structural Element)
+    # A 5x5 kernel is usually enough to remove small noise
+    kernel = np.ones((5, 5), np.uint8)
+
+    # 4. Perform Opening
+    # cv2.MORPH_OPEN tells OpenCV to do Erosion then Dilation
+    opening = cv2.morphologyEx(gray, cv2.MORPH_OPEN, kernel)
+
+    # 5. Display Results
+    cv2.imshow('Original Gray', gray)
+    cv2.imshow('Opening (Noise Removal)', opening)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()

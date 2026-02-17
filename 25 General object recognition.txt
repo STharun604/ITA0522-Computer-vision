@@ -1,0 +1,31 @@
+import cv2
+import numpy as np
+
+# 1. Load the main image and the template of the watch
+img_rgb = cv2.imread(r'C:\Users\HP\Documents\openCV\sample.jpg')
+template = cv2.imread(r'C:\Users\HP\Documents\openCV\template.png', 0)
+
+if img_rgb is None or template is None:
+    print("Error: Could not load images. Ensure both main image and template exist.")
+else:
+    # Convert main image to grayscale for matching
+    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    w, h = template.shape[::-1]
+
+    # 2. Perform Template Matching
+    # TM_CCOEFF_NORMED is generally the most accurate method
+    res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+    
+    # 3. Define a threshold (e.g., 0.8 for 80% similarity)
+    threshold = 0.8
+    loc = np.where(res >= threshold)
+
+    # 4. Draw a rectangle around the detected watch
+    # zip(*loc[::-1]) converts the result into (x, y) coordinates
+    for pt in zip(*loc[::-1]):
+        cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 255, 0), 2)
+
+    # 5. Display the result
+    cv2.imshow('Watch Recognition', img_rgb)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()

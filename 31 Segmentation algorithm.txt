@@ -1,0 +1,34 @@
+import cv2
+
+# 1. Load the image in grayscale for simple threshold segmentation
+img = cv2.imread(r'C:\Users\HP\Documents\openCV\sample.jpg', cv2.IMREAD_GRAYSCALE)
+
+if img is None:
+    print("Error: Could not load image.")
+else:
+    # 2. Set the threshold value
+    # Pixels > 127 become 255 (white), Pixels <= 127 become 0 (black)
+    threshold_value = 127
+    max_value = 255
+
+    # 3. Apply Binary Thresholding
+    ret, thresh_binary = cv2.threshold(img, threshold_value, max_value, cv2.THRESH_BINARY)
+
+    # 4. Apply Binary Thresholding Inverted (Black becomes White)
+    ret, thresh_binary_inv = cv2.threshold(img, threshold_value, max_value, cv2.THRESH_BINARY_INV)
+
+    # 5. Apply Truncate (Pixels > 127 are set to 127)
+    ret, thresh_trunc = cv2.threshold(img, threshold_value, max_value, cv2.THRESH_TRUNC)
+
+    # 6. Apply ToZero (Pixels < 127 are set to 0)
+    ret, thresh_tozero = cv2.threshold(img, threshold_value, max_value, cv2.THRESH_TOZERO)
+
+    # Display results
+    cv2.imshow('Original Gray', img)
+    cv2.imshow('Binary Segmentation', thresh_binary)
+    cv2.imshow('Binary Inv Segmentation', thresh_binary_inv)
+    cv2.imshow('Truncated', thresh_trunc)
+    cv2.imshow('To Zero', thresh_tozero)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()

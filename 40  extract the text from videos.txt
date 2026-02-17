@@ -1,0 +1,52 @@
+import cv2
+import pytesseract
+
+# If you are on Windows, you MUST point to the tesseract.exe path
+# Example: pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
+def extract_text_from_video(video_path):
+    cap = cv2.VideoCapture(video_path)
+    
+    if not cap.isOpened():
+        print("Error: Could not open video.")
+        return
+
+    # Get the frame rate (FPS) to sample 1 frame per second
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    frame_count = 0
+    extracted_text_data = []
+
+    print("Processing video... this may take a moment.")
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        # Process only one frame every 'fps' frames (1 frame per second)
+        if frame_count % int(fps) == 0:
+            # 1. Convert frame to grayscale for better OCR accuracy
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            
+            # 2. Use Tesseract to find text in the frame
+            text = pytesseract.image_to_string(gray)
+            
+            # 3. Store text if it's not empty
+            clean_text = text.strip()
+            if clean_text:
+                timestamp = frame_count // fps
+                extracted_text_data.append(f"Time {timestamp}s: {clean_text}")
+                print(f"Detected at {timestamp}s: {clean_text[:50]}...")
+
+        frame_count += 1
+
+    cap.release()
+    
+    # Save results to a file
+    with open("extracted_text.txt", "w") as f:
+        f.write("\n".join(extracted_text_data))
+    
+    print("\nExtraction complete! Check 'extracted_text.txt'.")
+
+# Run the function
+extract_text_from_video(r'C:\Users\HP\Documents\openCV\car.mp4')

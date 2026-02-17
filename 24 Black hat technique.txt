@@ -1,0 +1,23 @@
+import cv2
+import numpy as np
+
+# 1. Load the image in grayscale
+img = cv2.imread(r'C:\Users\HP\Documents\openCV\sample.jpg', cv2.IMREAD_GRAYSCALE)
+
+if img is None:
+    print("Error: Could not load image. Check the path.")
+else:
+    # 2. Define the kernel
+    # Use a larger kernel to capture larger dark regions
+    kernel = np.ones((15, 15), np.uint8)
+
+    # 3. Perform Black Hat transformation
+    # Logic: Closing(Image) - Image
+    blackhat = cv2.morphologyEx(img, cv2.MORPH_BLACKHAT, kernel)
+
+    # 4. Display results
+    cv2.imshow('Original Grayscale', img)
+    cv2.imshow('Black Hat (Dark features)', blackhat)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
